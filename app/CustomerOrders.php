@@ -1,19 +1,22 @@
 <?php
 
 namespace App;
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomerOrders extends Model
 {
 
-    protected $primaryKey = "orderId";
+    protected $primaryKey = "id";
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
         'id', 'quantity','customerId', 'itemId','userLocation','statusId', 'description', 'serviceProviderId','description'
     ];
+    protected $appends = [
+        'isExpired'
+      ];
     protected $casts = [
         'quantity' => 'integer',
     ];
@@ -37,4 +40,13 @@ class CustomerOrders extends Model
     public function totalPrice(){
     	return $this->quantity* $this->item()->price;
     }
+    public function getIsExpiredAttribute(){
+        $now = Carbon::now();
+        $timestamp = Carbon::parse($this->created_at)->addHour();
+        if($now > $timestamp){
+            return true;
+        }
+        return false;
+    }
+
 }

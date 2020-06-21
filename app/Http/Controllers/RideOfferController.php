@@ -19,12 +19,23 @@ class RideOfferController extends Controller
      */
     public function index()
     {
+        $this->updaeRideSatus();
         $rideOffers=RideOffer::with('passengers')->with('status')->whereHas('status', function ($query){
             $query->where('name', '=','New');
           })->get();
         return response()->json($rideOffers, 200);
     }
-
+    public function updaeRideSatus(){
+        $rideStatusExpired=RideStatus::where('name','Expired')->first()['id'];
+        $rideOffers=RideOffer::with('passengers')->with('status')->whereHas('status', function ($query){
+            $query->where('name', '=','New');
+          })->get();
+          foreach ($rideOffers as $ride) {
+           if($ride->isExpired==true){
+                $ride->update(['rideStatusId'=>$rideStatusExpired]);
+           }
+       }
+   }
     /**
      * Show the form for creating a new resource.
      *

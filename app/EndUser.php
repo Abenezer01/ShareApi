@@ -67,6 +67,8 @@ class EndUser extends Authenticatable #changed
     {
         return $this->hasMany('App\CustomerOrders','customerId','id');
     }
-    
-
+    public function rating()
+    {
+        return $this->hasMany('App\Rating', 'userId');
+    }
 }

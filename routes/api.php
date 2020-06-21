@@ -55,6 +55,7 @@ Route::group([
         Route::get('/serviceCatagories/serviceType/{option}', 'CHRLServiceProvidersController@index');
         Route::resource('/serviceCatagories', 'ServiceCatagoriesController');
         Route::resource('/customerOrders','CustomerOrdersController');
+        Route::resource('/rating','RatingController');
     });
 
 });

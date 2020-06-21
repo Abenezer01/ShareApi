@@ -15,8 +15,18 @@ class CustomerOrdersController extends Controller
      */
     public function index()
     {
+        $this->updateOrderStatus();
         $model =Auth::user()->customerOrders->sortByDesc('created_at')->values();
         return response()->json($model, 200);
+    }
+    private function updateOrderStatus(){
+
+        $status=Status::where('name','Expired')->first();
+        foreach (Auth::user()->customerOrders as $order) {
+            if($order->isExpired==true){
+                $order->update(['statusId'=>$status->id]);
+            }
+        }
     }
 
     /**
@@ -37,9 +47,8 @@ class CustomerOrdersController extends Controller
      */
     public function store(Request $request)
     {
-
         $orderData=$request->all();
-        $orderData['userLocation']=collect($orderData['userLocation']);
+        $orderData['userLocation']=json_encode($orderData['userLocation']);
         $orderData['id']='CO-'.uniqid();
         $orderData['statusId']=Status::where('name','New')->first()['id'];
         $response=$request->user()->customerOrders()->create($orderData);
