@@ -19,6 +19,9 @@ class AuthController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         $user = $request->user();
+        if($user->email_verified_at== NULL){
+            return response()->json(['error'=>'Please Verify Email'], 403);
+            }
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
@@ -40,7 +43,7 @@ class AuthController extends Controller
             'lastName' => 'required|string|max:255',
             'phone' => 'required|string|max:255|unique:end_users,phone',
             'gender'=>'required',
-            'email' => 'required|string|email|max:255|unique:end_users,email',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:end_users,email',
             'password' => 'required|string|min:8',
           ]);
           if($validator->fails()){
@@ -51,6 +54,7 @@ class AuthController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = EndUser::create($input);
+        $user->sendApiEmailVerificationNotification();
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);
@@ -69,6 +73,6 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json(Auth::user()->load(['avatar','customerOrders','vehicles']));
+        return response()->json(Auth::user()->load(['avatar','customerOrders','vehicles','identityCardPicture']));
     }
 }

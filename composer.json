@@ -9,13 +9,18 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "ctf0/email-validator": "^1.0",
+        "egulias/email-validator": "^2.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
+        "laravel/helpers": "^1.2",
         "laravel/passport": "^9.2",
+        "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0"
+        "laravel/ui": "^2.0",
+        "skmetaly/laravel-smtp-email-verifier": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

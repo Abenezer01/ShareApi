@@ -6,10 +6,12 @@ return [
   'baseUrl2'=>$baseUrl2,
   'picturePaths'=>[
     'avatar'=>$baseUrl1.'avatar/',
+    'identityCard'=>$baseUrl1.'identityCard/',
     'menuItem'=>$baseUrl2.'menuItem/',
+
     'serviceCatagories'=>$baseUrl1.'sPCatagory/',
     'CHRLServiceProvider'=>$baseUrl1.'SpLogo/',
     'menuItemsGroup'=>$baseUrl1.'itemsGroup/',
   ]
 ]
- ?>
+?>

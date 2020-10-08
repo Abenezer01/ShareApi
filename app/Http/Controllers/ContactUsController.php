@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\MenuItemGroup;
+use App\ContactUs;
 use Illuminate\Http\Request;
-use App\MenuItems;
-class MenuItemsController extends Controller
+
+class ContactUsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,37 +35,30 @@ class MenuItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        if($request['type']=='USER'){
+            $request->user()->sendMessage()->create($request->all());
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\ContactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ContactUs $contactUs)
     {
-        $menuItems=MenuItems::where('id',$id)->with('itemsGroup.menuItems')->with('serviceProvider.serviceCatagory')->first();
-        return response()->json($menuItems, 200);
-    }
-    public function spMenu($id){
-
-        $menuItemGroups=MenuItemGroup::with(['menuItems'=>function($q) use($id){
-            $q->where('serviceProviderId','=',$id);
-        }])->whereHas('menuItems',function($query) use($id){
-            $query->where('serviceProviderId','=',$id);
-        })->get();
-        return response()->json($menuItemGroups, 200);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\ContactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ContactUs $contactUs)
     {
         //
     }
@@ -74,10 +67,10 @@ class MenuItemsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\ContactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ContactUs $contactUs)
     {
         //
     }
@@ -85,10 +78,10 @@ class MenuItemsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\ContactUs  $contactUs
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ContactUs $contactUs)
     {
         //
     }

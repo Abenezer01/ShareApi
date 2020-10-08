@@ -1,16 +1,16 @@
 <?php
 
 namespace App;
-
+use App\Notifications\PasswordResetRequest;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class EndUser extends Authenticatable #changed
+use App\Notifications\VerifyApiEmail;
+class EndUser extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use Notifiable, HasApiTokens; #changed
+    use Notifiable, HasApiTokens;
 
   protected $primaryKey = "id";
   public $incrementing = false;
@@ -71,4 +71,17 @@ class EndUser extends Authenticatable #changed
     {
         return $this->hasMany('App\Rating', 'userId');
     }
+    public function sendMessage()
+    {
+        return $this->hasMany('App\ContactUs', 'userId');
+    }
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail); // my notification
+    }
+    public function identityCardPicture(){
+        return $this->morphMany('App\IdentityCardPicture', 'identityable');
+    }
+
+
 }

@@ -54,7 +54,6 @@ class CustomerOrdersController extends Controller
         $response=$request->user()->customerOrders()->create($orderData);
         return response()->json($response, 200);
     }
-
     /**
      * Display the specified resource.
      *

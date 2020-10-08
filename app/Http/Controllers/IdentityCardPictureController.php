@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\IdentityCardPicture;
 use Illuminate\Http\Request;
 
-class AvatarController extends Controller
+class IdentityCardPictureController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,7 @@ class AvatarController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -23,7 +24,7 @@ class AvatarController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -34,19 +35,19 @@ class AvatarController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->file('avatarPreview')) {
-            $image = $request->file('avatarPreview');
-            $fileNameToStore  = 'Avatar-'.auth()->user()->firstName.time().'.'.$image->getClientOriginalExtension();
+        if ($request->file('identityCardPreview')) {
+            $image = $request->file('identityCardPreview');
+            $fileNameToStore  = 'Id-'.auth()->user()->firstName.time().'.'.$image->getClientOriginalExtension();
             $client = new  \GuzzleHttp\Client();
             try{
-                $response = $client->request('POST', config('global.picturePaths.avatar').'store', [
+                $response = $client->request('POST', config('global.picturePaths.identityCard').'store', [
                   'multipart' => [
                        [
                           'name'     => 'fileName',
                           'contents' => $fileNameToStore
                       ],
                       [
-                          'name'=>'avatarPreview',
+                          'name'=>'identityCardPreview',
                           'contents' => fopen($image, 'r')
                       ],
                   ]
@@ -55,7 +56,7 @@ class AvatarController extends Controller
                     return response()->json(['message'=>$e], 200);
                 }
             if($response->getStatusCode()==200){
-                $request->user()->avatar()->create(['avatarName'=>$fileNameToStore]);
+                $request->user()->identityCardPicture()->create(['fileName'=>$fileNameToStore]);
              }else{
                 return response()->json(['message'=>'something went wrong'], 200);
              }
@@ -63,15 +64,16 @@ class AvatarController extends Controller
               return response()->json(['message'=>'profile picture updated successfully'], 200);
           }
           return response()->json(['message'=>'profile picture updated successfully'], 200);
-     }
+
+    }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\IdentityCardPicture  $identityCardPicture
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(IdentityCardPicture $identityCardPicture)
     {
         //
     }
@@ -79,10 +81,10 @@ class AvatarController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\IdentityCardPicture  $identityCardPicture
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(IdentityCardPicture $identityCardPicture)
     {
         //
     }
@@ -91,10 +93,10 @@ class AvatarController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\IdentityCardPicture  $identityCardPicture
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, IdentityCardPicture $identityCardPicture)
     {
         //
     }
@@ -102,10 +104,10 @@ class AvatarController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\IdentityCardPicture  $identityCardPicture
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(IdentityCardPicture $identityCardPicture)
     {
         //
     }

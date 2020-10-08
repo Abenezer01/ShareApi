@@ -57,17 +57,7 @@ class BookRideController extends Controller
         }
         return response()->json(['errorMessage'=>'Requestd seats are not available'], 403);
     }
-    public function getRideBookHistory($userId)
-    {
-        try {
-            $rideHistory = BookRide::where('rideConsumerId', $userId)->with('rideOffer.user')->whereHas('rideOffer', function ($query) {
-                $query->where('id', '=', 'RS-5e776cf04cfd8');
-            })->get();
-        } catch (\Throwable $th) {
-            return response()->json(["Message" => "user don't have ride history"], 200);
-        }
-        return response()->json($rideHistory, 200);
-    }
+
     /**
      * Display the specified resource.
      *
